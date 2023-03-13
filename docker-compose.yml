@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  db:
+    image: mysql:8
+    container_name: vestibulandos-dev-db
+    tty: true
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 33306:3306
+    environment:
+      MYSQL_DATABASE: vestibulandos
+      MYSQL_ROOT_PASSWORD: vestibulandos
+      MYSQL_PASSWORD: vestibulandos
+      MYSQL_USER: vestibulandos
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+      - vestibulandosMysqlData:/var/lib/mysql
+    networks:
+      - vestibulandosNetwork
+
+networks:
+  vestibulandosNetwork:
+    driver: bridge
+
+volumes:
+  vestibulandosMysqlData:
+    driver: local
+    name: vestibulandosMysqlData
+
+  vestibulandosElasticSearchData:
+    driver: local
+    name: viapalElasticSearchData
